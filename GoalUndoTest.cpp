@@ -184,13 +184,61 @@ TEST(GoalUndoTest, undo_Operation_multipleOpSameName)
 }
 
 
-
-///// ask kevin how to check !goals.empty() condition 
-/*
 TEST(GoalUndoTest, undo_Operation_emptyGoal)
 {
 	GoalUndo goal;
 	goal.undoOperation();
-	//ASSERT_FALSE(goal.undoOperation());
-}*/
+	ASSERT_EQ("",goal.getOperations());
+}
 
+TEST(GoalUndoTest, undo_Operation_emptyGoal_getOp)
+{
+	GoalUndo goal;
+	goal.undoOperation("op1");
+	ASSERT_EQ("",goal.getOperations());
+}
+
+TEST(GoalUndoTest, undo_Operation_emptyGoal_withParameter)
+{
+	GoalUndo goal;
+	goal.addOperation("goal1","op1");
+	goal.undoOperation("op1");
+	ASSERT_EQ("",goal.getGoal());
+}
+
+
+
+TEST(GoalUndoTest, undo_Operation_NoGoal)
+{
+	GoalUndo goal;
+	goal.undoOperation();
+	ASSERT_EQ("",goal.getGoal());
+}
+
+/* undoGoal() unit testing */ 
+
+TEST(GoalUndoTest, undo_Goal)
+{
+	GoalUndo goal;
+	goal.undoGoal();
+	ASSERT_EQ("",goal.getGoal());
+}
+
+
+TEST(GoalUndoTest, undo_Goal_withOperations)
+{
+	GoalUndo goal;
+	goal.addOperation("goal1","op1");
+	goal.undoGoal();
+	ASSERT_EQ("",goal.getGoal());
+}
+
+
+TEST(GoalUndoTest, undo_Goal_multipleGoal_withOperations)
+{
+	GoalUndo goal;
+	goal.addOperation("goal1","op1");
+	goal.addOperation("goal2","op2");
+	goal.undoGoal();
+	ASSERT_EQ("goal1",goal.getGoal());
+}
